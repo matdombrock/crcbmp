@@ -12,7 +12,8 @@ enum Clr_Mode {
     Clr_Mode_REDSHIFT,
     Clr_Mode_EARTH,
     Clr_Mode_BINARY,
-    Clr_Mode_Primary
+    Clr_Mode_Primary,
+    Clr_Mode_Pastel,
 };
 
 struct Clr_Mode_Dict {
@@ -54,6 +55,11 @@ void color_px_primary(struct BMP *image, int pos) {
     image->data[pos + 1] = (rand() % 256) > 128 ? 255 : 0;
     image->data[pos + 2] = (rand() % 256) > 128 ? 255 : 0;
 }
+void color_px_pastel(struct BMP *image, int pos) {
+    image->data[pos] = (rand() % 128) + 128;
+    image->data[pos + 1] = (rand() % 128) + 128;
+    image->data[pos + 2] = (rand() % 128) + 128;
+}
 const struct Clr_Mode_Dict color_mode_dict[] = {
     {"random", Clr_Mode_RANDOM, color_px_random},
     {"gray", Clr_Mode_GRAY, color_px_gray},
@@ -61,6 +67,7 @@ const struct Clr_Mode_Dict color_mode_dict[] = {
     {"earth", Clr_Mode_EARTH, color_px_earth},
     {"binary", Clr_Mode_BINARY, color_px_binary},
     {"primary", Clr_Mode_Primary, color_px_primary},
+    {"pastel", Clr_Mode_Pastel, color_px_pastel},
     {NULL, 0, color_px_random}
 };
 void color_px(struct BMP *image, int pos, enum Clr_Mode mode) {
