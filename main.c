@@ -8,13 +8,17 @@
 #define CFG_DEF_SCALE_TARGET 256
 
 enum Clr_Mode {
-    Clr_Mode_RANDOM,
-    Clr_Mode_GRAY,
-    Clr_Mode_REDSHIFT,
-    Clr_Mode_EARTH,
-    Clr_Mode_BINARY,
+    Clr_Mode_Random,
+    Clr_Mode_Grey,
+    Clr_Mode_Redshift,
+    Clr_Mode_Greenshift,
+    Clr_Mode_Blueshift,
+    Clr_Mode_Earth,
+    Clr_Mode_Binary,
     Clr_Mode_Primary,
     Clr_Mode_Pastel,
+    Clr_Mode_Greyish,
+    Clr_Mode_Garden,
 };
 
 struct Clr_Mode_Dict {
@@ -38,7 +42,17 @@ void color_px_gray(struct BMP *image, int pos) {
 void color_px_redshift(struct BMP *image, int pos) {
     image->data[pos] = rand() % 128;
     image->data[pos + 1] = rand() % 64;
-    image->data[pos + 2] = rand() % 255;
+    image->data[pos + 2] = rand() % 200;
+}
+void color_px_greenshift(struct BMP *image, int pos) {
+    image->data[pos] = rand() % 128;
+    image->data[pos + 1] = rand() % 200;
+    image->data[pos + 2] = rand() % 64;
+}
+void color_px_blueshift(struct BMP *image, int pos) {
+    image->data[pos] = rand() % 200;
+    image->data[pos + 1] = rand() % 64;
+    image->data[pos + 2] = rand() % 128;
 }
 void color_px_earth(struct BMP *image, int pos) {
     image->data[pos] = rand() % 128;
@@ -61,14 +75,29 @@ void color_px_pastel(struct BMP *image, int pos) {
     image->data[pos + 1] = (rand() % 128) + 128;
     image->data[pos + 2] = (rand() % 128) + 128;
 }
+void color_px_greyish(struct BMP *image, int pos) {
+    image->data[pos] = 32 + (rand() % 96);
+    image->data[pos + 1] = 32 + (rand() % 96);
+    image->data[pos + 2] = 32 + (rand() % 96);
+}
+void color_px_garden(struct BMP *image, int pos) {
+    int rng = rand() % 42;
+    image->data[pos] = 32 + rng;
+    image->data[pos + 1] = 34 + rng;
+    image->data[pos + 2] =  32 + rng;
+}
 const struct Clr_Mode_Dict color_mode_dict[] = {
-    {"random", Clr_Mode_RANDOM, color_px_random},
-    {"gray", Clr_Mode_GRAY, color_px_gray},
-    {"redshift", Clr_Mode_REDSHIFT, color_px_redshift},
-    {"earth", Clr_Mode_EARTH, color_px_earth},
-    {"binary", Clr_Mode_BINARY, color_px_binary},
+    {"random", Clr_Mode_Random, color_px_random},
+    {"grey", Clr_Mode_Grey, color_px_gray},
+    {"redshift", Clr_Mode_Redshift, color_px_redshift},
+    {"greenshift", Clr_Mode_Greenshift, color_px_greenshift},
+    {"blueshift", Clr_Mode_Blueshift, color_px_blueshift},
+    {"earth", Clr_Mode_Earth, color_px_earth},
+    {"binary", Clr_Mode_Binary, color_px_binary},
     {"primary", Clr_Mode_Primary, color_px_primary},
     {"pastel", Clr_Mode_Pastel, color_px_pastel},
+    {"greyish", Clr_Mode_Greyish, color_px_greyish},
+    {"garden", Clr_Mode_Garden, color_px_garden},
     {NULL, 0, color_px_random}
 };
 void color_px(struct BMP *image, int pos, enum Clr_Mode mode) {
@@ -85,7 +114,7 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
         return 1;
     }
-    enum Clr_Mode cfg_mode = Clr_Mode_RANDOM;
+    enum Clr_Mode cfg_mode = Clr_Mode_Random;
     const char *cfg_filename = argv[argc -1]; // last argument
     const char *cfg_filename_out = argv[argc -1]; // last argument
     int cfg_width = -1;
