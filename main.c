@@ -159,7 +159,7 @@ int main(int argc, char *argv[]) {
                 fprintf(stderr, "  -x <width>   Set the width of the image (default: 4)\n");
                 fprintf(stderr, "  -y <height>  Set the height of the image (default: same as width)\n");
                 fprintf(stderr, "  -s <scale>   Set the scale factor (default: 256/width)\n");
-                fprintf(stderr, "  -o <output>  Set the output filename (default: filename.crc.bmp)\n");
+                fprintf(stderr, "  -o <output>  Set the output filename (default: crc.filename.bmp)\n");
                 fprintf(stderr, "  -r <offset>  Set the RNG offset (default: 0)\n");
                 fprintf(stderr, "  -b           Use bilinear scaling (default: nearest neighbor)\n");
                 fprintf(stderr, "  -h           Show this help message\n");
@@ -171,6 +171,11 @@ int main(int argc, char *argv[]) {
         }
     }
     // Defaults
+    if (strcmp(cfg_filename, cfg_filename_out) == 0) {
+        char new_filename[256];
+        snprintf(new_filename, sizeof(new_filename), "%s.crc.bmp", cfg_filename);
+        cfg_filename_out = new_filename;
+    }
     if (cfg_width == -1) {
         cfg_width = CFG_DEF_WIDTH;
     }
@@ -196,7 +201,8 @@ int main(int argc, char *argv[]) {
         bmp_resize(&image, image.width * cfg_scale, image.height * cfg_scale);
     }
     char new_filename[256];
-    snprintf(new_filename, sizeof(new_filename), "%s.crc.bmp", cfg_filename_out);
+    snprintf(new_filename, sizeof(new_filename), "%s", cfg_filename_out);
+    printf("Writing to %s\n", new_filename);
     bmp_write(new_filename, &image);
     free(image.data);
     return 0;
