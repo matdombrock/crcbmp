@@ -2,6 +2,7 @@
 #include "bmp.h"
 #include <string.h>
 #include <unistd.h>
+#include <getopt.h>
 
 #define CFG_DEF_WIDTH 4
 #define CFG_DEF_SCALE_TARGET 256
