@@ -116,7 +116,7 @@ int main(int argc, char *argv[]) {
     }
     enum Clr_Mode cfg_mode = Clr_Mode_Random;
     const char *cfg_filename = argv[argc -1]; // last argument
-    const char *cfg_filename_out = argv[argc -1]; // last argument
+    char *cfg_filename_out = argv[argc -1]; // last argument
     int cfg_width = -1;
     int cfg_height = -1;
     int cfg_scale = -1;
@@ -172,9 +172,10 @@ int main(int argc, char *argv[]) {
     }
     // Defaults
     if (strcmp(cfg_filename, cfg_filename_out) == 0) {
-        char new_filename[256];
-        snprintf(new_filename, sizeof(new_filename), "%s.crc.bmp", cfg_filename);
-        cfg_filename_out = new_filename;
+        // char new_filename[256];
+        //snprintf(new_filename, sizeof(new_filename), "%s.crc.bmp", cfg_filename);
+        sprintf(cfg_filename_out, "%s.crc.bmp", cfg_filename);
+        // cfg_filename_out = new_filename;
     }
     if (cfg_width == -1) {
         cfg_width = CFG_DEF_WIDTH;
@@ -200,10 +201,8 @@ int main(int argc, char *argv[]) {
     } else {
         bmp_resize(&image, image.width * cfg_scale, image.height * cfg_scale);
     }
-    char new_filename[256];
-    snprintf(new_filename, sizeof(new_filename), "%s", cfg_filename_out);
-    printf("Writing to %s\n", new_filename);
-    bmp_write(new_filename, &image);
+    printf("Writing to %s\n", cfg_filename_out);
+    bmp_write(cfg_filename_out, &image);
     free(image.data);
     return 0;
 }
